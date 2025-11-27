@@ -7,9 +7,10 @@
 
 import Foundation
 
-struct Location: Hashable {
-    let state: String?
-    let country: String
+//struct Location: Hashable {
+@Observable class Location: Identifiable {
+    var state: String?
+    var country: String
     
     init(state: String?, country: String) {
         self.state = state
