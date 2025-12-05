@@ -21,4 +21,8 @@ struct Education: Hashable {
     let location: String
     let startDate: Date
     let endDate: Date
+    
+    func getEducationLevelString() -> String {
+        return level.rawValue + ", " + name
+    }
 }

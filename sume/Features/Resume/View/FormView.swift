@@ -22,6 +22,13 @@ struct FormView: View {
                     }
                 }
                 
+                Section(header: Text("Where Did You Go for School?")) {
+                    List(resumeDetails.workHistory) {
+                        getWorkFields($0)
+                    }
+                }
+                
+                
             }
         }
     }
@@ -58,36 +65,15 @@ struct FormView: View {
         }
     }
     
-    func getWorkFields(_ experience: WorkExperience) -> some View {
+    private func getWorkFields(_ experience: WorkExperience) -> some View {
+        WorkCellView(experience: experience)
+            .padding(8)
+    }
+    
+    private func getEducationFields(_ experience: Education) -> some View {
         VStack(alignment: .leading) {
-            HStack {
-                Text(experience.position)
-                    .font(.headline)
-                    .lineLimit(3)
-                Spacer()
-                HStack(alignment: .top) {
-                    getDateString(from: experience.startDate)
-                    Text("-")
-                        .font(.subheadline)
-                    getDateString(from: experience.endDate)
-                }
-            }
-            .padding(.bottom, 4)
             
-            HStack {
-                Text(experience.companyName)
-                    .font(.subheadline)
-                Divider()
-                Text(experience.location.getLocationString())
-                    .font(.subheadline)
-            }
-            
-            List(experience.responsibilities, id: \.self) {
-                Text("- " + $0)
-                    .font(.body)
-            }
         }
-        .padding(8)
     }
     
     private func getDateString(from date: Date?) -> some View {
