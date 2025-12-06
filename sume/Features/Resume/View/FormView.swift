@@ -10,82 +10,101 @@ import SwiftUI
 struct FormView: View {
     @State var resumeDetails: Resume
     
-    var body: some View {
-        VStack {
-            Text("Form View")
-            Form {
-               personalDetails
-                
-                Section(header: Text("Where Did You Work?")) {
-                    List(resumeDetails.workHistory) {
-                        getWorkFields($0)
-                    }
-                }
-                
-                Section(header: Text("Where Did You Go for School?")) {
-                    List(resumeDetails.workHistory) {
-                        getWorkFields($0)
-                    }
-                }
-                
-                
-            }
-        }
-    }
+    //Collapsible variable
+    @State private var isPersonalToggled: Bool = true
+    @State private var isWorkToggled: Bool = true
+    @State private var isEducationToggled: Bool = true
+    @State private var isSkillsToggled: Bool = true
     
-    var personalDetails: some View {
-        //Personal Details
-        Section(header: Text("Who Are You?")) {
-            //Name
-            TextField("First Name", text: $resumeDetails.personalDetails.firstName)
-            let lastNameBinding = Binding($resumeDetails.personalDetails.lastName)
-            if let lastNameBinding {
-                TextField("Last Name", text: lastNameBinding)
-            }
-            let nickNameBinding = Binding($resumeDetails.personalDetails.preferredName)
-            if let nickNameBinding {
-                TextField("Preferred Name", text: nickNameBinding)
-            }
-            
-            //Email
-            TextField("Email", text: $resumeDetails.personalDetails.email)
-            
-            //Location
-            HStack {
-                if let stateBinding = Binding($resumeDetails.personalDetails.address.state) {
-                    TextField("State", text: stateBinding)
-                    Divider()
+    var body: some View {
+        VStack() {
+            Form {
+                Section(isExpanded: $isPersonalToggled) {
+                    PersonalDetailsView(details: resumeDetails.personalDetails)
+                    
+                } header: {
+                    HStack {
+                        Text("Where Did You Work?")
+                        Spacer()
+                        Button(action: {
+                            isPersonalToggled.toggle()
+                        }) {
+                            Image(systemName:isPersonalToggled ? "chevron.down" : "chevron.right")
+                        }
+                        .tint(.gray)
+                    }
                 }
                 
-                TextField("Country", text: $resumeDetails.personalDetails.address.country)
-            }
-            if let nationalBinding = Binding($resumeDetails.personalDetails.nationality) {
-                TextField("Nationality", text: nationalBinding)
+                Section(isExpanded: $isWorkToggled) {
+                    List(resumeDetails.workHistory) {
+                        getWorkFields($0)
+                            .padding(8)
+                    }
+                } header: {
+                    HStack {
+                        Text("Where Did You Work?")
+                        Spacer()
+                        Button(action: {
+                            isWorkToggled.toggle()
+                        }) {
+                            Image(systemName:isWorkToggled ? "chevron.down" : "chevron.right")
+                        }
+                        .tint(.gray)
+                    }
+                }
+                
+                Section(isExpanded: $isEducationToggled) {
+                    List(resumeDetails.education) {
+                        getEducationFields($0)
+                    }
+                } header: {
+                    HStack {
+                        Text("Where Did You Go for School?")
+                        Spacer()
+                        Button(action: {
+                            isEducationToggled.toggle()
+                        }) {
+                            Image(systemName:isEducationToggled ? "chevron.down" : "chevron.right")
+                        }
+                        .tint(.gray)
+                    }
+                }
+                
+                Section(isExpanded: $isSkillsToggled) {
+                    ForEach(resumeDetails.skills, id: \.self) { skills in
+                        getSkillsFields(skills)
+                    }
+                } header: {
+                    HStack {
+                        Text("What Are You Good At?")
+                        Spacer()
+                        Button(action: {
+                            isSkillsToggled.toggle()
+                        }) {
+                            Image(systemName:isSkillsToggled ? "chevron.down" : "chevron.right")
+                        }
+                        .tint(.gray)
+                    }
+                }
+                
+               
+
             }
         }
     }
     
     private func getWorkFields(_ experience: WorkExperience) -> some View {
         WorkCellView(experience: experience)
-            .padding(8)
+            
     }
     
     private func getEducationFields(_ experience: Education) -> some View {
-        VStack(alignment: .leading) {
-            
-        }
+        EducationCellView(details: experience)
     }
     
-    private func getDateString(from date: Date?) -> some View {
-        if let date {
-            return Text(date, format: .dateTime.month().year())
-                .font(.subheadline)
-        } else {
-            return Text("Present")
-                .font(.subheadline)
-        }
+    private func getSkillsFields(_ skills: Skills) -> some View {
+        SkillCellView(skills: skills)
     }
-    
     
 }
 
@@ -99,19 +118,13 @@ struct FormView: View {
     ]
     
     let mockEducation = [
-        Education(name: "Computer Science (Software Engineering)", level: .bachelor, institution: "UiTM Tapah", location: "Tapah", startDate: Date(timeIntervalSince1970: 167000), endDate: Date.now),
-        Education(name: "Computer Science (Software Engineering)", level: .master, institution: "Harvard", location: "University of Berkley", startDate: Date(timeIntervalSince1970: 167000), endDate: Date.now),
+        Education(name: "Computer Science (Software Engineering)", level: .bachelor, institution: "UiTM Tapah", location: Location(state: "Kuala Lumpur", country: "Malaysia"), startDate: Date(timeIntervalSince1970: 167000), endDate: Date.now),
+        Education(name: "Computer Science (Software Engineering)", level: .master, institution: "Harvard", location: Location(state: "Kuala Selangor", country: "Malaysia"), startDate: Date(timeIntervalSince1970: 167000), endDate: Date.now),
     ]
     
     let mockSkills = [
-        Skills(skills: [
-            .technical: [
-                "Coding"
-            ],
-            .soft: [
-                "Speaking"
-            ]
-        ])
+        Skills(type: .technical, skills: ["Coding"]),
+        Skills(type: .soft, skills: ["Speaking"])
     ]
     
     let mockResume = Resume(personalDetails: mockPersonal, workHistory: mockHistory, education: mockEducation, skills: mockSkills)

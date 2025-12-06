@@ -14,13 +14,22 @@ enum EducationLevel: String, Hashable {
     case phd = "Doctorate"
 }
 
-struct Education: Hashable {
+@Observable class Education: Identifiable {
     let name: String
     let level: EducationLevel
     let institution: String
-    let location: String
+    let location: Location
     let startDate: Date
     let endDate: Date
+    
+    init(name: String, level: EducationLevel, institution: String, location: Location, startDate: Date, endDate: Date) {
+        self.name = name
+        self.level = level
+        self.institution = institution
+        self.location = location
+        self.startDate = startDate
+        self.endDate = endDate
+    }
     
     func getEducationLevelString() -> String {
         return level.rawValue + ", " + name
