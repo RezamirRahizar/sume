@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WorkCellView: View {
-    @State var experience: WorkExperience
+    @Binding var experience: WorkExperience
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -42,8 +42,9 @@ struct WorkCellView: View {
 }
 
 #Preview {
-    Form {
-        WorkCellView(experience: WorkExperience(companyName: "Grab", location: Location(state: "Kuala Lumpur", country: "Malaysia"), position: "Associate Quality Engineer", startDate: Date(timeIntervalSinceNow: 167000), endDate: nil, responsibilities: ["Worked on iOS projects", "Delivered results"]))
+    PreviewStateWrapper(WorkExperience(companyName: "Grab", location: Location(state: "Kuala Lumpur", country: "Malaysia"), position: "Associate Quality Engineer", startDate: Date(timeIntervalSinceNow: 167000), endDate: nil, responsibilities: ["Worked on iOS projects", "Delivered results"])) { binding in
+        Form {
+            WorkCellView(experience: binding )
+        }
     }
-    
 }

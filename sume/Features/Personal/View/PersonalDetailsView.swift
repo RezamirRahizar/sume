@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PersonalDetailsView: View {
-    @State var details: PersonalDeets
+    @Binding var details: PersonalDeets
     
     var body: some View {
         //Name
@@ -42,8 +42,20 @@ struct PersonalDetailsView: View {
 }
 
 #Preview {
-    Form {
-        PersonalDetailsView(details: PersonalDeets(firstName: "Joe", lastName:"Doe", email: "joe@email.com", address: Location(state: "Selangor", country: "Malaysia"), nationality: "Korean"))
+    let mockData = PersonalDeets(
+        firstName: "Joe",
+        lastName:"Doe",
+        email: "joe@email.com",
+        address: Location(state: "Selangor", country: "Malaysia"),
+        nationality: "Korean"
+    )
+    
+    PreviewStateWrapper(mockData) { binding in
+        Form {
+            PersonalDetailsView(details: binding)
+        }
     }
+    
+    
     
 }

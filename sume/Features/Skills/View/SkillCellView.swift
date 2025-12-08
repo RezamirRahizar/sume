@@ -8,14 +8,9 @@
 import SwiftUI
 
 struct SkillCellView: View {
-    @State var skills: Skills
+    @Binding var skills: Skills
     
     var body: some View {
-//        Section(header: Text("\(skills.type.rawValue.capitalized)")) {
-//            List(skills.skills, id: \.self) {
-//                Text($0)
-//            }
-//        }
         VStack(alignment: .leading) {
             Text("\(skills.type.rawValue.capitalized)")
                 .font(.headline)
@@ -25,19 +20,17 @@ struct SkillCellView: View {
             }
         }
        
-        
-        
-        
     }
 }
 
 #Preview {
-    Form {
-        SkillCellView(skills: Skills(
-                                type: .soft,
-                                skills: ["Speaking"]
-                            )
-        )
+    let mockData = Skills(
+        type: .soft,
+        skills: ["Speaking"]
+    )
+    PreviewStateWrapper(mockData) { binding in
+        Form {
+            SkillCellView(skills: binding)
+        }
     }
-    
 }

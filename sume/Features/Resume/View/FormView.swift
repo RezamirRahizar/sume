@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FormView: View {
     @State var resumeDetails: Resume
+    @State var isAllSectionsToggled: Bool = true
     
     //Collapsible variable
     @State private var isPersonalToggled: Bool = true
@@ -20,7 +21,7 @@ struct FormView: View {
         VStack() {
             Form {
                 Section(isExpanded: $isPersonalToggled) {
-                    PersonalDetailsView(details: resumeDetails.personalDetails)
+                    PersonalDetailsView(details: $resumeDetails.personalDetails)
                     
                 } header: {
                     HStack {
@@ -33,10 +34,12 @@ struct FormView: View {
                         }
                         .tint(.gray)
                     }
+                    .padding(.top, 24)
                 }
+               
                 
                 Section(isExpanded: $isWorkToggled) {
-                    List(resumeDetails.workHistory) {
+                    List($resumeDetails.workHistory) {
                         getWorkFields($0)
                             .padding(8)
                     }
@@ -54,7 +57,7 @@ struct FormView: View {
                 }
                 
                 Section(isExpanded: $isEducationToggled) {
-                    List(resumeDetails.education) {
+                    List($resumeDetails.education) {
                         getEducationFields($0)
                     }
                 } header: {
@@ -71,7 +74,7 @@ struct FormView: View {
                 }
                 
                 Section(isExpanded: $isSkillsToggled) {
-                    ForEach(resumeDetails.skills, id: \.self) { skills in
+                    ForEach($resumeDetails.skills, id: \.self) { skills in
                         getSkillsFields(skills)
                     }
                 } header: {
@@ -93,16 +96,25 @@ struct FormView: View {
         }
     }
     
-    private func getWorkFields(_ experience: WorkExperience) -> some View {
+    //MARK: Functions
+    public func toggleSections(_ value: Bool) {
+        isPersonalToggled = value
+        isWorkToggled = value
+        isEducationToggled = value
+        isSkillsToggled = value
+    }
+    
+    //MARK: UI Fields
+    private func getWorkFields(_ experience: Binding<WorkExperience>) -> some View {
         WorkCellView(experience: experience)
             
     }
     
-    private func getEducationFields(_ experience: Education) -> some View {
+    private func getEducationFields(_ experience: Binding<Education>) -> some View {
         EducationCellView(details: experience)
     }
     
-    private func getSkillsFields(_ skills: Skills) -> some View {
+    private func getSkillsFields(_ skills: Binding<Skills>) -> some View {
         SkillCellView(skills: skills)
     }
     

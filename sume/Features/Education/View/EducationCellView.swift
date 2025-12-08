@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EducationCellView: View {
-    @State var details: Education
+    @Binding var details: Education
     
     var body: some View {
         Section {
@@ -44,16 +44,20 @@ struct EducationCellView: View {
 
 
 #Preview {
-    Form {
-        EducationCellView(details:
-                            Education(
-                                name: "Computer Science (Software Engineering)",
-                                level: .bachelor,
-                                institution: "UiTM Tapah",
-                                location: Location(state: "Tapah", country: "Malaysia"),
-                                startDate: Date(timeIntervalSince1970: 167000),
-                                endDate: Date.now
-                            )
-        )
+    let mockData = Education(
+        name: "Computer Science (Software Engineering)",
+        level: .bachelor,
+        institution: "UiTM Tapah",
+        location: Location(state: "Tapah", country: "Malaysia"),
+        startDate: Date(timeIntervalSince1970: 167000),
+        endDate: Date.now
+    )
+    
+    PreviewStateWrapper(mockData) { binding in
+        Form {
+            EducationCellView(details: binding)
+        }
     }
+    
+   
 }
