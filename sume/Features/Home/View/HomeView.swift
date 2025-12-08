@@ -10,6 +10,11 @@ import SwiftUI
 struct HomeView: View {
     @State private var selectedDetent: PresentationDetent = .fraction(0.2)
     
+    @State private var isPersonalToggled: Bool = true
+    @State private var isWorkToggled: Bool = true
+    @State private var isEducationToggled: Bool = true
+    @State private var isSkillsToggled: Bool = true
+    
     //TODO: Move to ViewModel
     struct Output {
         var goToEdit:() -> Void
@@ -41,14 +46,32 @@ struct HomeView: View {
             )
             
         }.sheet(isPresented: .constant(true)) {
-            FormView(resumeDetails: getMockDetails())
+            FormView(
+                resumeDetails: getMockDetails(),
+                isPersonalToggled: $isPersonalToggled,
+                isWorkToggled: $isWorkToggled,
+                isEducationToggled: $isEducationToggled,
+                isSkillsToggled: $isSkillsToggled,
+            )
                 .presentationDetents([.fraction(0.2), .large], selection: $selectedDetent)
                 .interactiveDismissDisabled()
                 .presentationBackgroundInteraction(
                     .enabled(upThrough: .fraction(0.2))
                 )
+                .onChange(of: selectedDetent) { oldValue, newValue in
+                    updateFormDisplay(from: newValue)
+                }
 
         }
+    }
+    
+    private func updateFormDisplay(from currentDetent: PresentationDetent) {
+        let isShowingLarge = currentDetent == .large
+    
+        isPersonalToggled = isShowingLarge
+        isWorkToggled = isShowingLarge
+        isEducationToggled = isShowingLarge
+        isSkillsToggled = isShowingLarge
     }
     
     private func getMockDetails() -> Resume {

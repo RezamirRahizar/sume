@@ -9,13 +9,12 @@ import SwiftUI
 
 struct FormView: View {
     @State var resumeDetails: Resume
-    @State var isAllSectionsToggled: Bool = true
     
     //Collapsible variable
-    @State private var isPersonalToggled: Bool = true
-    @State private var isWorkToggled: Bool = true
-    @State private var isEducationToggled: Bool = true
-    @State private var isSkillsToggled: Bool = true
+    @Binding var isPersonalToggled: Bool
+    @Binding var isWorkToggled: Bool
+    @Binding var isEducationToggled: Bool
+    @Binding var isSkillsToggled: Bool
     
     var body: some View {
         VStack() {
@@ -121,26 +120,38 @@ struct FormView: View {
 }
 
 #Preview {
-    
-    let mockPersonal = PersonalDeets(firstName: "Joe", lastName:"Doe", email: "joe@email.com", address: Location(state: "Selangor", country: "Malaysia"), nationality: "Korean")
-    
-    let mockHistory = [
-        WorkExperience(companyName: "Grab", location: Location(state: "Kuala Lumpur", country: "Malaysia"), position: "Associate Quality Engineer", startDate: Date(timeIntervalSinceNow: 167000), endDate: nil, responsibilities: ["Worked on iOS projects", "Delivered results"]),
-        WorkExperience(companyName: "Foodpanda", location: Location(state: nil, country: "Malaysia"), position: "Senior Quality Engineer", startDate: Date(timeIntervalSinceNow: 167000), endDate: nil, responsibilities: ["Worked on iOS projects", "Delivered results"]),
-    ]
-    
-    let mockEducation = [
-        Education(name: "Computer Science (Software Engineering)", level: .bachelor, institution: "UiTM Tapah", location: Location(state: "Kuala Lumpur", country: "Malaysia"), startDate: Date(timeIntervalSince1970: 167000), endDate: Date.now),
-        Education(name: "Computer Science (Software Engineering)", level: .master, institution: "Harvard", location: Location(state: "Kuala Selangor", country: "Malaysia"), startDate: Date(timeIntervalSince1970: 167000), endDate: Date.now),
-    ]
-    
-    let mockSkills = [
-        Skills(type: .technical, skills: ["Coding"]),
-        Skills(type: .soft, skills: ["Speaking"])
-    ]
-    
-    let mockResume = Resume(personalDetails: mockPersonal, workHistory: mockHistory, education: mockEducation, skills: mockSkills)
-    
-    FormView(resumeDetails: mockResume)
+    FormViewPreview()
 }
 
+private struct FormViewPreview: View {
+    @State private var isPersonalToggled: Bool = true
+    @State private var isWorkToggled: Bool = true
+    @State private var isEducationToggled: Bool = true
+    @State private var isSkillsToggled: Bool = true
+    
+    
+    var body: some View {
+        FormView(resumeDetails: getMockResume(), isPersonalToggled: $isPersonalToggled, isWorkToggled: $isWorkToggled, isEducationToggled: $isEducationToggled, isSkillsToggled: $isSkillsToggled)
+    }
+    
+    private func getMockResume() -> Resume {
+        let mockPersonal = PersonalDeets(firstName: "Joe", lastName:"Doe", email: "joe@email.com", address: Location(state: "Selangor", country: "Malaysia"), nationality: "Korean")
+        
+        let mockHistory = [
+            WorkExperience(companyName: "Grab", location: Location(state: "Kuala Lumpur", country: "Malaysia"), position: "Associate Quality Engineer", startDate: Date(timeIntervalSinceNow: 167000), endDate: nil, responsibilities: ["Worked on iOS projects", "Delivered results"]),
+            WorkExperience(companyName: "Foodpanda", location: Location(state: nil, country: "Malaysia"), position: "Senior Quality Engineer", startDate: Date(timeIntervalSinceNow: 167000), endDate: nil, responsibilities: ["Worked on iOS projects", "Delivered results"]),
+        ]
+        
+        let mockEducation = [
+            Education(name: "Computer Science (Software Engineering)", level: .bachelor, institution: "UiTM Tapah", location: Location(state: "Kuala Lumpur", country: "Malaysia"), startDate: Date(timeIntervalSince1970: 167000), endDate: Date.now),
+            Education(name: "Computer Science (Software Engineering)", level: .master, institution: "Harvard", location: Location(state: "Kuala Selangor", country: "Malaysia"), startDate: Date(timeIntervalSince1970: 167000), endDate: Date.now),
+        ]
+        
+        let mockSkills = [
+            Skills(type: .technical, skills: ["Coding"]),
+            Skills(type: .soft, skills: ["Speaking"])
+        ]
+        
+        return Resume(personalDetails: mockPersonal, workHistory: mockHistory, education: mockEducation, skills: mockSkills)
+    }
+}
