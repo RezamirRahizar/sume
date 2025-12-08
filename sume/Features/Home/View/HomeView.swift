@@ -10,10 +10,10 @@ import SwiftUI
 struct HomeView: View {
     @State private var selectedDetent: PresentationDetent = .fraction(0.2)
     
-    @State private var isPersonalToggled: Bool = true
-    @State private var isWorkToggled: Bool = true
-    @State private var isEducationToggled: Bool = true
-    @State private var isSkillsToggled: Bool = true
+    @State private var isPersonalToggled: Bool = false
+    @State private var isWorkToggled: Bool = false
+    @State private var isEducationToggled: Bool = false
+    @State private var isSkillsToggled: Bool = false
     
     //TODO: Move to ViewModel
     struct Output {

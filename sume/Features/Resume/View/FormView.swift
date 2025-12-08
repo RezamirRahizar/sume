@@ -19,78 +19,41 @@ struct FormView: View {
     var body: some View {
         VStack() {
             Form {
-                Section(isExpanded: $isPersonalToggled) {
+                CollapsibleFormSectionView(
+                    sectionTitle: "Who Are You?",
+                    isExpanded: $isPersonalToggled,
+                    hasPaddedHeader: true
+                ) {
                     PersonalDetailsView(details: $resumeDetails.personalDetails)
-                    
-                } header: {
-                    HStack {
-                        Text("Where Did You Work?")
-                        Spacer()
-                        Button(action: {
-                            isPersonalToggled.toggle()
-                        }) {
-                            Image(systemName:isPersonalToggled ? "chevron.down" : "chevron.right")
-                        }
-                        .tint(.gray)
-                    }
-                    .padding(.top, 24)
                 }
-               
                 
-                Section(isExpanded: $isWorkToggled) {
+                CollapsibleFormSectionView(
+                    sectionTitle: "Where Did You Work?",
+                    isExpanded: $isWorkToggled
+                ) {
                     List($resumeDetails.workHistory) {
                         getWorkFields($0)
                             .padding(8)
                     }
-                } header: {
-                    HStack {
-                        Text("Where Did You Work?")
-                        Spacer()
-                        Button(action: {
-                            isWorkToggled.toggle()
-                        }) {
-                            Image(systemName:isWorkToggled ? "chevron.down" : "chevron.right")
-                        }
-                        .tint(.gray)
-                    }
                 }
                 
-                Section(isExpanded: $isEducationToggled) {
+                CollapsibleFormSectionView(
+                    sectionTitle: "Where Did You Go for School?",
+                    isExpanded: $isEducationToggled
+                ) {
                     List($resumeDetails.education) {
                         getEducationFields($0)
                     }
-                } header: {
-                    HStack {
-                        Text("Where Did You Go for School?")
-                        Spacer()
-                        Button(action: {
-                            isEducationToggled.toggle()
-                        }) {
-                            Image(systemName:isEducationToggled ? "chevron.down" : "chevron.right")
-                        }
-                        .tint(.gray)
-                    }
                 }
                 
-                Section(isExpanded: $isSkillsToggled) {
+                CollapsibleFormSectionView(
+                    sectionTitle: "What Are You Good At?",
+                    isExpanded: $isSkillsToggled
+                ) {
                     ForEach($resumeDetails.skills, id: \.self) { skills in
                         getSkillsFields(skills)
                     }
-                } header: {
-                    HStack {
-                        Text("What Are You Good At?")
-                        Spacer()
-                        Button(action: {
-                            isSkillsToggled.toggle()
-                        }) {
-                            Image(systemName:isSkillsToggled ? "chevron.down" : "chevron.right")
-                        }
-                        .tint(.gray)
-                    }
                 }
-                
-               
-
             }
         }
     }
