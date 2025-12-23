@@ -14,6 +14,7 @@ struct HomeView: View {
     @State private var isWorkToggled: Bool = false
     @State private var isEducationToggled: Bool = false
     @State private var isSkillsToggled: Bool = false
+    @State private var isExpanded: Bool = false
     
     //TODO: Move to ViewModel
     struct Output {
@@ -52,6 +53,7 @@ struct HomeView: View {
                 isWorkToggled: $isWorkToggled,
                 isEducationToggled: $isEducationToggled,
                 isSkillsToggled: $isSkillsToggled,
+                isExpanded: $isExpanded
             )
                 .presentationDetents([.fraction(0.2), .large], selection: $selectedDetent)
                 .interactiveDismissDisabled()
@@ -61,7 +63,6 @@ struct HomeView: View {
                 .onChange(of: selectedDetent) { oldValue, newValue in
                     updateFormDisplay(from: newValue)
                 }
-
         }
     }
     
@@ -72,6 +73,8 @@ struct HomeView: View {
         isWorkToggled = isShowingLarge
         isEducationToggled = isShowingLarge
         isSkillsToggled = isShowingLarge
+        
+        isExpanded = isShowingLarge
     }
     
     private func getMockDetails() -> Resume {
@@ -92,7 +95,7 @@ struct HomeView: View {
             Skills(type: .soft, skills: ["Speaking"])
         ]
         
-        return Resume(personalDetails: mockPersonal, workHistory: mockHistory, education: mockEducation, skills: mockSkills)
+        return Resume(personalDetails: mockPersonal, workHistory: mockHistory, education: mockEducation, skills: mockSkills, lastUpdated: Date())
         
     }
 }

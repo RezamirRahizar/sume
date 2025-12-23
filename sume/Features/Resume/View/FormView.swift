@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct FormView: View {
+    //TODO: Change to Binding
     @State var resumeDetails: Resume
     
     //Collapsible variable
@@ -16,8 +17,10 @@ struct FormView: View {
     @Binding var isEducationToggled: Bool
     @Binding var isSkillsToggled: Bool
     
+    @Binding var isExpanded: Bool
+    
     var body: some View {
-        VStack() {
+        if (isExpanded) {
             Form {
                 CollapsibleFormSectionView(
                     sectionTitle: "Who Are You?",
@@ -55,6 +58,14 @@ struct FormView: View {
                     }
                 }
             }
+            .safeAreaInset(edge: .top) {
+                Color.clear.frame(height: 12)
+            }
+        } else {
+            Text("Last Updated: \(resumeDetails.lastUpdated.formatted())")
+                .font(.title2)
+                .foregroundStyle(.gray)
+                
         }
     }
     
@@ -92,9 +103,18 @@ private struct FormViewPreview: View {
     @State private var isEducationToggled: Bool = true
     @State private var isSkillsToggled: Bool = true
     
+    @State private var isExpanded: Bool = true
+    
     
     var body: some View {
-        FormView(resumeDetails: getMockResume(), isPersonalToggled: $isPersonalToggled, isWorkToggled: $isWorkToggled, isEducationToggled: $isEducationToggled, isSkillsToggled: $isSkillsToggled)
+        FormView(
+            resumeDetails: getMockResume(),
+            isPersonalToggled: $isPersonalToggled,
+            isWorkToggled: $isWorkToggled,
+            isEducationToggled: $isEducationToggled,
+            isSkillsToggled: $isSkillsToggled,
+            isExpanded: $isExpanded
+        )
     }
     
     private func getMockResume() -> Resume {
@@ -115,6 +135,7 @@ private struct FormViewPreview: View {
             Skills(type: .soft, skills: ["Speaking"])
         ]
         
-        return Resume(personalDetails: mockPersonal, workHistory: mockHistory, education: mockEducation, skills: mockSkills)
+        return Resume(personalDetails: mockPersonal, workHistory: mockHistory, education: mockEducation, skills: mockSkills, lastUpdated: Date())
     }
+    
 }

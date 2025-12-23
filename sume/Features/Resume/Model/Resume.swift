@@ -8,19 +8,19 @@
 import Foundation
 import SwiftUI
 
-//TODO: Study Hashable definition at https://developer.apple.com/documentation/Swift/Hashable
-//struct Resume: Hashable {
 @Observable class Resume: Identifiable {
     var personalDetails: PersonalDeets
     var workHistory: [WorkExperience]
     var education: [Education]
     var skills: [Skills]
+    var lastUpdated: Date
     
-    init(personalDetails: PersonalDeets, workHistory: [WorkExperience], education: [Education], skills: [Skills]) {
+    init(personalDetails: PersonalDeets, workHistory: [WorkExperience], education: [Education], skills: [Skills], lastUpdated: Date) {
         self.personalDetails = personalDetails
         self.workHistory = workHistory
         self.education = education
         self.skills = skills
+        self.lastUpdated = lastUpdated
     }
 }
 
