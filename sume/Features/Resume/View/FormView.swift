@@ -35,7 +35,7 @@ struct FormView: View {
                     isExpanded: $isWorkToggled
                 ) {
                     List($resumeDetails.workHistory) {
-                        getWorkFields($0)
+                        WorkCellView(experience: $0)
                             .padding(8)
                     }
                 }
@@ -45,7 +45,7 @@ struct FormView: View {
                     isExpanded: $isEducationToggled
                 ) {
                     List($resumeDetails.education) {
-                        getEducationFields($0)
+                        EducationCellView(details: $0)
                     }
                 }
                 
@@ -54,7 +54,7 @@ struct FormView: View {
                     isExpanded: $isSkillsToggled
                 ) {
                     ForEach($resumeDetails.skills, id: \.self) { skills in
-                        getSkillsFields(skills)
+                        SkillCellView(skills: skills)
                     }
                 }
             }
@@ -77,20 +77,6 @@ struct FormView: View {
         isSkillsToggled = value
     }
     
-    //MARK: UI Fields
-    private func getWorkFields(_ experience: Binding<WorkExperience>) -> some View {
-        WorkCellView(experience: experience)
-            
-    }
-    
-    private func getEducationFields(_ experience: Binding<Education>) -> some View {
-        EducationCellView(details: experience)
-    }
-    
-    private func getSkillsFields(_ skills: Binding<Skills>) -> some View {
-        SkillCellView(skills: skills)
-    }
-    
 }
 
 #Preview {
@@ -108,7 +94,7 @@ private struct FormViewPreview: View {
     
     var body: some View {
         FormView(
-            resumeDetails: getMockResume(),
+            resumeDetails: Resume.getMock(),
             isPersonalToggled: $isPersonalToggled,
             isWorkToggled: $isWorkToggled,
             isEducationToggled: $isEducationToggled,
@@ -117,25 +103,5 @@ private struct FormViewPreview: View {
         )
     }
     
-    private func getMockResume() -> Resume {
-        let mockPersonal = PersonalDeets(firstName: "Joe", lastName:"Doe", email: "joe@email.com", address: Location(state: "Selangor", country: "Malaysia"), nationality: "Korean")
-        
-        let mockHistory = [
-            WorkExperience(companyName: "Grab", location: Location(state: "Kuala Lumpur", country: "Malaysia"), position: "Associate Quality Engineer", startDate: Date(timeIntervalSinceNow: 167000), endDate: nil, responsibilities: ["Worked on iOS projects", "Delivered results"]),
-            WorkExperience(companyName: "Foodpanda", location: Location(state: nil, country: "Malaysia"), position: "Senior Quality Engineer", startDate: Date(timeIntervalSinceNow: 167000), endDate: nil, responsibilities: ["Worked on iOS projects", "Delivered results"]),
-        ]
-        
-        let mockEducation = [
-            Education(name: "Computer Science (Software Engineering)", level: .bachelor, institution: "UiTM Tapah", location: Location(state: "Kuala Lumpur", country: "Malaysia"), startDate: Date(timeIntervalSince1970: 167000), endDate: Date.now),
-            Education(name: "Computer Science (Software Engineering)", level: .master, institution: "Harvard", location: Location(state: "Kuala Selangor", country: "Malaysia"), startDate: Date(timeIntervalSince1970: 167000), endDate: Date.now),
-        ]
-        
-        let mockSkills = [
-            Skills(type: .technical, skills: ["Coding"]),
-            Skills(type: .soft, skills: ["Speaking"])
-        ]
-        
-        return Resume(personalDetails: mockPersonal, workHistory: mockHistory, education: mockEducation, skills: mockSkills, lastUpdated: Date())
-    }
     
 }
