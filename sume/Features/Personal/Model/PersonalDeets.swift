@@ -24,6 +24,19 @@ import SwiftUI
         self.address = address
         self.nationality = nationality
     }
+    
+    func getFullName() -> String {
+        var name = firstName
+        if let lastName {
+            name = name + " " + lastName
+        }
+        
+        if let preferredName {
+            name = name + " (\(preferredName)"
+        }
+        
+        return name
+    }
 }
 
 

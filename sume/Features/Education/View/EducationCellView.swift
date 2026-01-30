@@ -25,9 +25,9 @@ struct EducationCellView: View {
                 }
                 .font(.subheadline)
                 HStack(alignment: .top) {
-                    details.startDate.getDateString()
+                    Text(details.startDate.getDateString())
                     Text("-")
-                    details.endDate.getDateString()
+                    Text(details.endDate.getDateString())
                 }
                 .font(.subheadline)
                 .padding(.bottom, 16)

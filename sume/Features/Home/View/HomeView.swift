@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
+    @State private var resume: Resume = Mocker.getResume()
     @State private var selectedDetent: PresentationDetent = .fraction(0.2)
     
     @State private var isPersonalToggled: Bool = false
@@ -27,25 +28,7 @@ struct HomeView: View {
     
     var body: some View {
         return VStack {
-            Button(
-                action: {
-                    self.output.goToEdit()
-                },
-                label: {
-                    Text("Edit page")
-                }
-            ).padding(.bottom, 16)
-            
-        
-            Button(
-                action: {
-                    self.output.goToHistory()
-                },
-                label: {
-                    Text("History page")
-                }
-            )
-            
+            ResumeView(details: $resume)
         }.sheet(isPresented: .constant(true)) {
             FormView(
                 resumeDetails: getMockDetails(),

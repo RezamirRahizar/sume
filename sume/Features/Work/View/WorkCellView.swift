@@ -25,11 +25,11 @@ struct WorkCellView: View {
                     .font(.subheadline)
             }
             HStack(alignment: .top) {
-                experience.startDate.getDateString()
+                Text(experience.startDate.getDateString())
                 Text("-")
-                    .font(.subheadline)
-                experience.endDate.getDateString()
+                Text(experience.endDate.getDateString())
             }
+            .font(.subheadline)
             .padding(.bottom, 16)
             
             List(experience.responsibilities, id: \.self) {

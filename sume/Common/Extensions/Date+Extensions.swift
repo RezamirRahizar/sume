@@ -9,20 +9,18 @@ import SwiftUI
 
 //Non-null `Date` handling
 extension Date {
-    func getDateString() -> some View {
-        return Text(self, format: .dateTime.month().year())
-        //.font(.subheadline)
+    func getDateString() -> String {
+        return self.formatted(.dateTime.month().year())
     }
 }
 
 //Nullable `Date` handling
 extension Optional where Wrapped == Date {
-  func getDateString() -> some View {
+  func getDateString() -> String {
         if let self {
-            return AnyView(self.getDateString())
+            return self.getDateString()
         } else {
-            return AnyView(Text("Present"))
-//                .font(.subheadline)
+            return "Present"
         }
     }
 }
