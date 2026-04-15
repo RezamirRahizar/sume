@@ -58,6 +58,7 @@ struct ResumeView: View {
                 }
                 .padding(.bottom, 24)
             }
+            .scrollIndicators(.hidden)
             
             
             Spacer()

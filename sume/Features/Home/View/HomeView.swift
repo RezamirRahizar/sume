@@ -28,7 +28,9 @@ struct HomeView: View {
     
     var body: some View {
         return VStack {
-            ResumeView(details: $resume)
+//            ResumeView(details: $resume)
+            ExportView()
+                .padding(.top, -150)
         }.sheet(isPresented: .constant(true)) {
             FormView(
                 resumeDetails: getMockDetails(),
